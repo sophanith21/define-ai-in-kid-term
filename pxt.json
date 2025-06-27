@@ -2,7 +2,9 @@
     "name": "Define AI in your term",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "arcade-text": "github:microsoft/arcade-text#v1.3.0",
+        "Turtle Logo": "github:mr-coxall/turtle-logo#V1.0.1"
     },
     "files": [
         "main.blocks",
