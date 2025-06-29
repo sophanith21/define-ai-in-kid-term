@@ -4,6 +4,7 @@
         "mimeType": "image/x-mkcd-f4",
         "tilemapTile": true
     },
+
     "tile1": {
         "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
@@ -90,6 +91,7 @@
         ],
         "displayName": "level1"
     },
+
     "*": {
         "mimeType": "image/x-mkcd-f4",
         "dataEncoding": "base64",
