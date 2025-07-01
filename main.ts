@@ -1,3 +1,4 @@
+
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     game.showLongText("Check the picture carefully, Question Incoming", DialogLayout.Bottom)
     wrongInput = true
@@ -76,3 +77,30 @@ game.onUpdate(function () {
         }
     }
 })
+
+namespace SpriteKind {
+    export const Webname = SpriteKind.create()
+}
+scene.setBackgroundColor(13)
+let mySprite = sprites.create(assets.image`Robot`, SpriteKind.Player)
+mySprite.setPosition(75, 40)
+mySprite.setScale(0.5, ScaleAnchor.Middle)
+let Nameweb = textsprite.create("AI PLAYGOUND", 0, 15)
+Nameweb.setPosition(40, 10)
+let name_user = textsprite.create("Dara", 0, 15)
+name_user.setPosition(143, 20)
+let pf = sprites.create(assets.image`User Icon`, SpriteKind.Player)
+pf.setScale(0.1, ScaleAnchor.Middle)
+pf.setPosition(143, 10)
+let message = textsprite.create("Let's learn more", 0, 15)
+message.setPosition(80, 75)
+let message2 = textsprite.create("about AI!", 0, 15)
+message2.setPosition(80, 85)
+let button = sprites.create(assets.image`Button`, SpriteKind.Player)
+button.setPosition(95, 110)
+button.setScale(0.3, ScaleAnchor.Middle)
+let button1 = textsprite.create("Learn", 0, 1)
+button1.setPosition(47, 105)
+let button2 = textsprite.create("Compete", 0, 1)
+button2.setPosition(107, 105)
+
