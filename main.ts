@@ -15,11 +15,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, l
         game.showLongText("First, you are a newly born AI which you need to learn as you grow up.", DialogLayout.Bottom)
     }
 })
-controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (jumpTo == 4) {
-        checkAnswer("B")
-    }
-})
+
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
     if (controller.B.isPressed() && jumpTo == 2) {
         game.setDialogFrame(img`
@@ -81,35 +77,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, 
         game.showLongText("You can play 1 VS 1", DialogLayout.Bottom)
     }
 })
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (jumpTo == 0) {
-        jumpTo = 4
-        initTo = jumpTo
-    } else if (jumpTo == 1 && end) {
-        jumpTo += 1
-        initTo = jumpTo
-        end = false
-    } else if (jumpTo == 2 && end) {
-        jumpTo += 1
-        initTo = jumpTo
-        end = false
-    } else if (jumpTo == 3 && end) {
-        jumpTo += 1
-        initTo = jumpTo
-        end = false
-    } else if (jumpTo == 4 && end) {
-        jumpTo += 1
-        initTo = jumpTo
-        end = false
-    } else if (jumpTo == 5 && end) {
-        jumpTo += 1
-        initTo = jumpTo
-        end = false
-    }
-    if (jumpTo == 4 && initTo == 0){
-        checkAnswer("A")
-    }
-})
+
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, location) {
     if (controller.B.isPressed() && jumpTo == 1) {
         game.setDialogFrame(assets.image`Dialogue5`)
@@ -123,6 +91,29 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, l
         game.showLongText("The more you learn, the smarter you are", DialogLayout.Bottom)
     }
 })
+function startGame () {
+    timer.after(800, function () {
+        name_p1 = textsprite.create("Player 1", 8, 11)
+        name_p1.setPosition(28, 6)
+        score_p1 = statusbars.create(20, 4, StatusBarKind.Health)
+        score_p1.setPosition(15, 15)
+        score_p1.value = 100
+        player1 = sprites.create(robot1_compete, SpriteKind.Player)
+        mp.setPlayerSprite(mp.playerSelector(mp.PlayerNumber.One), player1)
+        player1.setPosition(13, 100)
+        namep2 = textsprite.create("Player 2", 8, 11)
+        namep2.setPosition(132, 6)
+        score_p2 = statusbars.create(20, 4, StatusBarKind.Health)
+        score_p2.setPosition(145, 14)
+        score_p2.value = 100
+        player2 = sprites.create(robot1_compete, SpriteKind.Player)
+        mp.setPlayerSprite(mp.playerSelector(mp.PlayerNumber.Two), player2)
+        player2.setPosition(147, 100)
+        timer.after(1000, function () {
+            countDown()
+        })
+    })
+}
 function box2 (location: Image, floor: Image) {
     for (let value of tiles.getTilesByType(location)) {
         box = sprites.create(assets.image`Chest`, SpriteKind.Player)
@@ -193,6 +184,19 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile11-map`, function (spri
         }
     }
 })
+info.onCountdownEnd(function () {
+    question.setText("")
+    answer1.setText("")
+    answer2.setText("")
+    textSprite = textsprite.create("Correct Answer: " + answerList[currentIndex], 0, 1)
+    textSprite.setPosition(77, 57)
+    checkAnswer_competet()
+    timer.after(3000, function () {
+        textSprite.setText("")
+        currentIndex = currentIndex + 1
+        qmcDisplay()
+    })
+})
 controller.anyButton.onEvent(ControllerButtonEvent.Repeated, function () {
     scene.cameraShake(1.03, 500)
 })
@@ -251,6 +255,35 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10-map`, function (spri
         }
     }
 })
+function qmcDisplay () {
+    questionList = ["1. What can AI do ?", "2. What is AI like?", "3. Why is AI special"]
+    choiceA = ["A. Think and Learn", "A. A smart robot", "A. It eats food"]
+    choiceB = ["B. Sleep", "B. A toy car", "B. It learns from people"]
+    answerList = ["A", "A", "B"]
+    timer.after(500, function () {
+        if (currentIndex < questionList.length) {
+            info.startCountdown(10)
+            question = textsprite.create(questionList[currentIndex])
+            question.setPosition(78, 33)
+            answer1 = textsprite.create(choiceA[currentIndex])
+            answer1.setPosition(79, 55)
+            answer2 = textsprite.create(choiceB[currentIndex])
+            answer2.setPosition(78, 72)
+            player1Answer = ""
+            player2Answer = ""
+        } else {
+            game.splash("Competition finished!")
+            if (score_p1.value > score_p2.value) {
+                game.splash("Player 1 WINS!")
+            } else if (score_p1.value < score_p2.value) {
+                game.splash("Player 2 WINS!")
+            } else {
+                game.splash("It is a tie!")
+            }
+            game.reset()
+        }
+    })
+}
 function checkAnswer (answer: string) {
     selectedAnswer = answer
     if (selectedAnswer == correctAnswers[currentQuestion]) {
@@ -273,6 +306,7 @@ function checkAnswer (answer: string) {
         if (optionBTextSprite) {
             optionBTextSprite.destroy(effects.spray, 100)
         }
+        end = true
     }
 }
 function levelLocation () {
@@ -387,6 +421,18 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, l
         game.showLongText("You will explore and consume the knowledge.", DialogLayout.Bottom)
     }
 })
+function checkAnswer_competet () {
+    if (player1Answer == answerList[currentIndex]) {
+        score_p1.value += 20
+    } else {
+        score_p1.value -= 20
+    }
+    if (player2Answer == answerList[currentIndex]) {
+        score_p2.value += 20
+    } else {
+        score_p2.value -= 20
+    }
+}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     game.showLongText("Check the picture carefully, Question Incoming", DialogLayout.Bottom)
     wrongInput = true
@@ -477,6 +523,76 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sp
         }
     }
 })
+mp.onButtonEvent(mp.MultiplayerButton.B, ControllerButtonEvent.Pressed, function (player3) {
+    if (player3 == mp.playerSelector(mp.PlayerNumber.One)) {
+        player1Answer = "B"
+    } else {
+        player2Answer = "B"
+    }
+    if (jumpTo == 4) {
+        checkAnswer("B")
+    }
+})
+mp.onButtonEvent(mp.MultiplayerButton.A, ControllerButtonEvent.Pressed, function (player3) {
+    if (player3 == mp.playerSelector(mp.PlayerNumber.One)) {
+        player1Answer = "A"
+    } else {
+        player2Answer = "A"
+    }
+    if (jumpTo == 0) {
+        jumpTo += 1
+        initTo = jumpTo
+    } else if (jumpTo == 1 && end) {
+        jumpTo += 1
+        initTo = jumpTo
+        end = false
+    } else if (jumpTo == 2 && end) {
+        jumpTo += 1
+        initTo = jumpTo
+        end = false
+    } else if (jumpTo == 3 && end) {
+        jumpTo += 1
+        initTo = jumpTo
+        end = false
+    } else if (jumpTo == 4 && end) {
+        jumpTo += 2
+        initTo = jumpTo
+        end = false
+    } else if (jumpTo == 5 && end) {
+        jumpTo += 1
+        initTo = jumpTo
+        end = false
+    }
+    if (jumpTo == 4 && initTo == 0) {
+        checkAnswer("A")
+    }
+})
+function countDown () {
+    title = textsprite.create("Let's compete")
+    title.setPosition(80, 62)
+    timer.after(1000, function () {
+        title.setText("")
+        count = textsprite.create("")
+        for (let index = 3; index >= 0; index--) {
+            let captureIndex = index
+            let delay = (3 - index) * 1000
+            timer.after(delay, function () {
+                count.setText("" + captureIndex)
+                if (captureIndex == 0) {
+                    count.setText("GO!")
+                    count.setPosition(84, 62)
+                    music.play(music.melodyPlayable(music.magicWand), music.PlaybackMode.UntilDone)
+                    timer.after(1000, function () {
+                        count.setText("")
+                        qmcDisplay()
+                    })
+                } else {
+                    music.play(music.melodyPlayable(music.pewPew), music.PlaybackMode.UntilDone)
+                }
+            })
+        }
+    })
+}
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile14`, function (sprite, location) {
     if (controller.B.isPressed()) {
         game.setDialogFrame(assets.image`Dialogue9`)
@@ -556,6 +672,7 @@ let robot2: Sprite = null
 let robot1: Sprite = null
 let optionsB: string[] = []
 let optionsA: string[] = []
+let title: TextSprite = null
 let flashimageimageprocessing: Sprite = null
 let flashbackSpriteimageprocessing: TextSprite = null
 let AIPlaygroundSprite: TextSprite = null
@@ -573,14 +690,70 @@ let questionTexts: string[] = []
 let currentQuestion = 0
 let correctAnswers: string[] = []
 let selectedAnswer = ""
+let player2Answer = ""
+let player1Answer = ""
+let choiceB: string[] = []
+let choiceA: string[] = []
+let questionList: string[] = []
 let user: Sprite = null
+let currentIndex = 0
+let answerList: string[] = []
+let textSprite: TextSprite = null
+let answer2: TextSprite = null
+let answer1: TextSprite = null
+let question: TextSprite = null
 let box: Sprite = null
+let player2: Sprite = null
+let namep2: TextSprite = null
+let player1: Sprite = null
+let name_p1: TextSprite = null
 let initTo = 0
 let end = false
 let hey: Sprite = null
 let jumpTo = 0
-let titleUser = null
+let robot1_compete: Image = null
+let count: TextSprite = null
+let score_p1: StatusBarSprite = null
+let score_p2: StatusBarSprite = null
 let titleImg = null
+let titleUser = null
+robot1_compete = img`
+    ..............................................................
+    ..............................................................
+    ...............................b..............................
+    ..............................................................
+    ..............................ff..............................
+    ..........................bbbbbbbbbbc.........................
+    .........................bbbbbbbbbbb6.........................
+    ........................cbcc1ccccdcccc........................
+    .......................cbbc1c1cc1c1c6bc.......................
+    .......................cbbc1c1c1cb1c6cc.......................
+    ........................cbbccccccccb6cf.......................
+    .........................bbbbbbbbbb6c.........................
+    ..........................66ccc6c6666.........................
+    ..............................cc..............................
+    ..........................bbbbbbbbb6..........................
+    ..........................bbbbbbbbbc6.........................
+    ........................ccbb6c6cccb6cf........................
+    .......................cffbb111114b66cc.......................
+    .......................fc.bb19b1ddbc6cfc......................
+    ......................cf..bbccccccbc6.fc......................
+    .....................bd6c.bbbbbbbbb66.6bb.....................
+    .....................bb66.bbbbbbbbb66c6bb.....................
+    .....................bbc6.bbbbbbbb66cccbb.....................
+    .....................cccc.bbbb6bb666.cccc.....................
+    .....................c..c..666c6b66..c..c.....................
+    .....................cc.c..fc....cf..c.cc.....................
+    ...........................ff....ff...........................
+    ...........................ccc...cc...........................
+    ...........................db6..bbc...........................
+    ..........................bbbc..bbcc..........................
+    ..........................bbbc..bb6c..........................
+    ..........................bbbc..bbc6..........................
+    ..........................6666..c666c.........................
+    ..............................................................
+    ..............................................................
+    `
 scene.setBackgroundColor(13)
 let mySprite = sprites.create(assets.image`robot-land`, SpriteKind.Player)
 mySprite.setPosition(75, 40)
@@ -706,6 +879,15 @@ game.onUpdate(function () {
         correctAnswers = ["A", "B"]
         // Start the quiz
         askQuestion(currentQuestion)
+    } else if (initTo == 6) {
+        initTo = 0
+        scene.setBackgroundColor(8)
+        title = textsprite.create("Competition Phase")
+        title.setPosition(77, 62)
+        timer.after(2000, function () {
+            title.setText("")
+            startGame()
+        })
     }
 })
 game.onUpdate(function () {

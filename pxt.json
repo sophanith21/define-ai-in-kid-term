@@ -6,7 +6,10 @@
         "pxt-circuit-playground-character-icons": "github:adafruit/circuit-playground-character-icons#v0.0.8",
         "sprite-scaling": "*",
         "arcade-text": "github:microsoft/arcade-text#v1.3.0",
-        "Turtle Logo": "github:mr-coxall/turtle-logo#V1.0.1"
+        "Turtle Logo": "github:mr-coxall/turtle-logo#V1.0.1",
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.2",
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "multiplayer": "*"
     },
     "files": [
         "main.blocks",
