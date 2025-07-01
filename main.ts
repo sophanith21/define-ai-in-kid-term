@@ -60,16 +60,53 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, lo
             `)
         game.showLongText("level 4", DialogLayout.Bottom)
         if (game.ask("Do you want to enter?")) {
-        	
+
         }
     }
 })
-function spawnPoint () {
+let label: TextSprite = null
+
+function showLabel(text: string) {
+    if (label) {
+        label.destroy()
+    }
+    label = textsprite.create(text, 0, 1)
+    label.setPosition(80, 10)
+    label.setFlag(SpriteFlag.RelativeToCamera, true)
+
+    // Remove the label after 2 seconds (non-blocking)
+    control.runInParallel(function () {
+        pause(2000)
+        if (label) {
+            label.destroy()
+            label = null
+        }
+    })
+}
+
+
+scene.onOverlapTile(SpriteKind.Player, assets.tile`imageTile`, function () {
+    showLabel("📍 Image Processing")
+    onImageProcess = true;
+})
+
+scene.onOverlapTile(SpriteKind.Player, assets.tile`mlTile`, function () {
+    showLabel("📍 Machine Learning")
+    onImageProcess = false;
+})
+
+scene.onOverlapTile(SpriteKind.Player, assets.tile`voiceTile`, function () {
+    showLabel("📍 Voice Recognition")
+    onImageProcess = false;
+})
+function spawnPoint() {
     for (let value3 of tiles.getTilesByType(assets.tile`transparency16`)) {
         tiles.placeOnTile(hey, value3)
         tiles.setTileAt(value3, assets.tile`myTile4`)
     }
 }
+
+
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, location) {
     if (controller.B.isPressed() && jumpTo == 1) {
         game.setDialogFrame(assets.image`Dialogue8`)
@@ -89,7 +126,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, l
         game.showLongText("The more you learn, the smarter you are", DialogLayout.Bottom)
     }
 })
-function startGame () {
+function startGame() {
     timer.after(800, function () {
         name_p1 = textsprite.create("Player 1", 8, 11)
         name_p1.setPosition(28, 6)
@@ -112,7 +149,7 @@ function startGame () {
         })
     })
 }
-function box2 (location: Image, floor: Image) {
+function box2(location: Image, floor: Image) {
     for (let value of tiles.getTilesByType(location)) {
         box = sprites.create(assets.image`Chest`, SpriteKind.Player)
         tiles.placeOnTile(box, value)
@@ -178,7 +215,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile11-map`, function (spri
             `)
         game.showLongText("level 8", DialogLayout.Bottom)
         if (game.ask("Do you want to enter?")) {
-        	
+
         }
     }
 })
@@ -198,7 +235,7 @@ info.onCountdownEnd(function () {
 controller.anyButton.onEvent(ControllerButtonEvent.Repeated, function () {
     scene.cameraShake(1.03, 500)
 })
-function spawnpoint () {
+function spawnpoint() {
     for (let value2 of tiles.getTilesByType(assets.tile`myTile`)) {
         tiles.placeOnTile(user, value2)
         tiles.setTileAt(value2, sprites.builtin.brick)
@@ -249,11 +286,11 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10-map`, function (spri
             `)
         game.showLongText("level 7", DialogLayout.Bottom)
         if (game.ask("Do you want to enter?")) {
-        	
+
         }
     }
 })
-function qmcDisplay () {
+function qmcDisplay() {
     questionList = ["1. What can AI do ?", "2. What is AI like?", "3. Why is AI special"]
     choiceA = ["A. Think and Learn", "A. A smart robot", "A. It eats food"]
     choiceB = ["B. Sleep", "B. A toy car", "B. It learns from people"]
@@ -282,7 +319,7 @@ function qmcDisplay () {
         }
     })
 }
-function checkAnswer (answer: string) {
+function checkAnswer(answer: string) {
     selectedAnswer = answer
     if (selectedAnswer == correctAnswers[currentQuestion]) {
         game.splash("✅ Correct!")
@@ -307,18 +344,18 @@ function checkAnswer (answer: string) {
         end = true
     }
 }
-function levelLocation () {
+function levelLocation() {
     text_list = [
-    "level 1",
-    "level 2",
-    "level 3",
-    "level 4",
-    "level 5",
-    "level 6",
-    "level 7",
-    "level 8",
-    "level 9",
-    "level 10"
+        "level 1",
+        "level 2",
+        "level 3",
+        "level 4",
+        "level 5",
+        "level 6",
+        "level 7",
+        "level 8",
+        "level 9",
+        "level 10"
     ]
     i = 0
     oneLocation(assets.tile`transparency16`, assets.tile`transparency16`)
@@ -332,7 +369,7 @@ function levelLocation () {
     oneLocation(assets.tile`transparency16`, assets.tile`transparency16`)
     oneLocation(assets.tile`myTile13-map`, assets.tile`myTile13-map`)
 }
-function oneLocation (locaI: Image, floor: Image) {
+function oneLocation(locaI: Image, floor: Image) {
     for (let value22 of tiles.getTilesByType(locaI)) {
         level2 = sprites.create(img`
             ...bbbbbbbbbb...
@@ -409,7 +446,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile8-map`, function (sprit
             `)
         game.showLongText("level 5", DialogLayout.Bottom)
         if (game.ask("Do you want to enter?")) {
-        	
+
         }
     }
 })
@@ -419,7 +456,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, l
         game.showLongText("You will explore and consume the knowledge.", DialogLayout.Bottom)
     }
 })
-function checkAnswer_competet () {
+function checkAnswer_competet() {
     if (player1Answer == answerList[currentIndex]) {
         score_p1.value += 20
     } else {
@@ -463,14 +500,17 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     flashimageimageprocessing = sprites.create(assets.image`mountain-one`, SpriteKind.Food)
     scaling.scaleToPercent(flashimageimageprocessing, 300, ScaleDirection.Uniformly, ScaleAnchor.Left)
     animation.runImageAnimation(
-    flashimageimageprocessing,
-    assets.animation`Mountain-animation-2`,
-    250,
-    true
+        flashimageimageprocessing,
+        assets.animation`Mountain-animation-2`,
+        250,
+        true
     )
+    controller.moveSprite(robotimageprocessing,0,0)
     flashimageimageprocessing.sayText("Hey, this is an image about mountains with sun shining brightly", 5000, true)
     pause(5500)
     flashimageimageprocessing.sayText("Eat me so you can recognize similar picture like me okay?", 5000, true)
+    pause(5500)
+    controller.moveSprite(robotimageprocessing, 100, 100)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sprite, location) {
     if (controller.B.isPressed() && jumpTo == 2) {
@@ -517,7 +557,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sp
             `)
         game.showLongText("Home", DialogLayout.Bottom)
         if (game.ask("Do you want to leave?")) {
-        	
+
         }
     }
 })
@@ -553,7 +593,7 @@ mp.onButtonEvent(mp.MultiplayerButton.A, ControllerButtonEvent.Pressed, function
         initTo = jumpTo
         end = false
     } else if (jumpTo == 4 && end) {
-        jumpTo += 2
+        jumpTo += 1
         initTo = jumpTo
         end = false
     } else if (jumpTo == 5 && end) {
@@ -564,8 +604,12 @@ mp.onButtonEvent(mp.MultiplayerButton.A, ControllerButtonEvent.Pressed, function
     if (jumpTo == 4 && initTo == 0) {
         checkAnswer("A")
     }
+
+    if (jumpTo == 5 && onImageProcess) {
+        end = true;
+    }
 })
-function countDown () {
+function countDown() {
     title = textsprite.create("Let's compete")
     title.setPosition(80, 62)
     timer.after(1000, function () {
@@ -646,7 +690,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile6-map`, function (sprit
         }
     }
 })
-function askQuestion (index: number) {
+function askQuestion(index: number) {
     // Destroy previous text sprites
     if (questionTextSprite) {
         questionTextSprite.destroy(effects.spray, 100)
@@ -715,6 +759,7 @@ let titleImg = null
 let score_p2: StatusBarSprite = null
 let score_p1: StatusBarSprite = null
 let count: TextSprite = null
+let onImageProcess = false;
 robot1_compete = img`
     ..............................................................
     ..............................................................
@@ -775,6 +820,7 @@ button1.setPosition(47, 105)
 let button2 = textsprite.create("Compete", 0, 1)
 button2.setPosition(107, 105)
 game.showLongText("Press A to \"Learn\", Press B to \"Compete\"", DialogLayout.Bottom)
+let mySprite_compete: Sprite = null
 game.onUpdate(function () {
     if (initTo == 1) {
         initTo = 0
@@ -831,12 +877,9 @@ game.onUpdate(function () {
     } else if (initTo == 3) {
         tiles.setCurrentTilemap(tilemap`level1`)
         sprites.destroy(user)
-        sprites.destroy(user)
         sprites.destroyAllSpritesOfKind(SpriteKind.level)
         sprites.destroyAllSpritesOfKind(SpriteKind.Player)
         initTo = 0
-        music.play(music.stringPlayable("C5 B A G F E D C ", 120), music.PlaybackMode.LoopingInBackground)
-        music.play(music.createSong(assets.song`bg-music-image-processing`), music.PlaybackMode.LoopingInBackground)
         scene.setBackgroundColor(6)
         AIPlaygroundSprite = textsprite.create("AI PLAYGROUND", 0, 15)
         scaling.scaleToPercent(AIPlaygroundSprite, 150, ScaleDirection.Uniformly, ScaleAnchor.Left)
@@ -850,16 +893,17 @@ game.onUpdate(function () {
         imageimageprocessing = sprites.create(assets.image`mountain-2`, SpriteKind.Food)
         scaling.scaleToPercent(imageimageprocessing, 300, ScaleDirection.Uniformly, ScaleAnchor.Left)
         animation.runImageAnimation(
-        imageimageprocessing,
-        assets.animation`Mountain-animation`,
-        250,
-        true
+            imageimageprocessing,
+            assets.animation`Mountain-animation`,
+            250,
+            true
         )
         game.showLongText("Hey there little AI!", DialogLayout.Bottom)
         game.showLongText("Have you ever wonder how you can look at a picture and understand what's in it?", DialogLayout.Bottom)
         game.showLongText("Like knowing there is a cat, a tree or a big bright sun?", DialogLayout.Bottom)
         game.showLongText("Try moving around as An AI and consume that image and see", DialogLayout.Bottom)
     } else if (initTo == 4) {
+
         sprites.destroy(flashbackSpriteimageprocessing)
         sprites.destroy(robotimageprocessing)
         initTo = 0
@@ -877,8 +921,34 @@ game.onUpdate(function () {
         correctAnswers = ["A", "B"]
         // Start the quiz
         askQuestion(currentQuestion)
-    } else if (initTo == 6) {
+    } else if (initTo == 5) {
         sprites.destroy(robot1)
+        sprites.destroy(robot2)
+        initTo = 0;
+        scene.setBackgroundColor(7)
+        tiles.setCurrentTilemap(tilemap`level_compete`)
+        mySprite_compete = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . 4 4 4 . . . . 4 4 4 . . . . 
+    . 4 5 5 5 e . . e 5 5 5 4 . . . 
+    4 5 5 5 5 5 e e 5 5 5 5 5 4 . . 
+    4 5 5 4 4 5 5 5 5 4 4 5 5 4 . . 
+    e 5 4 4 5 5 5 5 5 5 4 4 5 e . . 
+    . e e 5 5 5 5 5 5 5 5 e e . . . 
+    . . e 5 f 5 5 5 5 f 5 e . . . . 
+    . . f 5 5 5 4 4 5 5 5 f . f f . 
+    . . . 4 5 5 f f 5 5 6 f f 5 f . 
+    . . . f 6 6 6 6 6 6 4 f 5 5 f . 
+    . . . f 5 5 5 5 5 5 5 4 5 f . . 
+    . . . . f 5 4 5 f 5 f f f . . . 
+    . . . . . f f f f f f f . . . . 
+`, SpriteKind.Player)
+        controller.moveSprite(mySprite_compete)
+        scene.cameraFollowSprite(mySprite_compete)
+    }
+    else if (initTo == 6) {
+        tiles.setCurrentTilemap(tilemap`level1`)
+        sprites.destroy(mySprite_compete)
         sprites.destroy(robot2)
         initTo = 0
         scene.setBackgroundColor(8)
@@ -895,8 +965,16 @@ game.onUpdate(function () {
         if (robotimageprocessing.overlapsWith(flashimageimageprocessing)) {
             sprites.destroy(flashimageimageprocessing, effects.fountain, 500)
             robotimageprocessing.sayText("Yum! So these tiny squares filled with numbers show a picture about mountains with sun, cloud and tree!", 10000, true)
-            game.showLongText("Press A to Continnue to \"Quiz\" Phase", DialogLayout.Bottom)
-            end = true
+            
+            timer.after(10000, function () {
+                game.showLongText("Press A to Continnue to \"Quiz\" Phase", DialogLayout.Bottom)
+                end = true
+            })
+            
         }
     }
+    if (onImageProcess) {
+        mySprite_compete.sayText("Press A to enter a competition about this topic", 5)
+    }
+
 })

@@ -72,6 +72,20 @@ namespace myTiles {
     export const tile34 = image.ofBuffer(hex``);
     //% fixedInstance jres blockIdentity=images._tile
     export const tile35 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile36 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile37 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile38 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile39 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile40 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile41 = image.ofBuffer(hex``);
+    //% fixedInstance jres blockIdentity=images._tile
+    export const tile42 = image.ofBuffer(hex``);
 
     helpers._registerFactory("tilemap", function(name: string) {
         switch(helpers.stringTrim(name)) {
@@ -170,6 +184,25 @@ namespace myTiles {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, [myTiles.transparency16], TileScale.Sixteen);
+            case "level_compete":
+            case "level_compete1":return tiles.createTilemap(hex`1000100000000000000000000000000000000000000101010100000000000000000000000001010101000505000303030300000000010101010000050003030303000000000101010100000000030303030000000000060000000000000303030300000000000600000000000000070600000000000006070700000000000506050000000005060606000400000000060500000000050000060004040000000600090400000000080600000000000006000400000000020202020000000008060000000000000202020206060606060600000000000002020202000000000000000000000404020202020000000000000000030304040404000000050500000003030303`, img`
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+2 . . . . 2 2 2 2 2 2 2 2 2 2 2 
+2 . . . . 2 2 2 2 . . . . 2 2 2 
+2 . . . . 2 2 2 2 . . . . 2 2 2 
+2 . . . . 2 2 2 2 . . . . 2 2 2 
+2 2 . 2 2 2 2 2 2 . . . . 2 2 2 
+2 2 . 2 2 2 2 2 2 2 2 . 2 2 2 2 
+2 2 . 2 2 2 2 2 2 2 2 . 2 2 2 2 
+2 2 . . . 2 2 2 2 2 2 . 2 2 2 2 
+2 2 2 2 . 2 2 2 2 2 2 . 2 2 2 2 
+2 2 2 2 . 2 2 2 2 2 2 . 2 2 2 2 
+2 2 . . . . 2 2 2 2 2 . 2 2 2 2 
+2 2 . . . . . . . . . . 2 2 2 2 
+2 2 . . . . 2 2 2 2 2 2 2 2 2 2 
+2 2 . . . . 2 2 2 2 2 2 2 2 2 2 
+2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+`, [myTiles.transparency16,myTiles.tile36,myTiles.tile39,myTiles.tile40,sprites.builtin.forestTiles0,myTiles.tile41,sprites.dungeon.floorLight0,myTiles.tile42,sprites.swamp.swampTile3,sprites.castle.tileDarkGrass3], TileScale.Sixteen);
         }
         return null;
     })
@@ -247,6 +280,18 @@ namespace myTiles {
             case "tile34":return tile34;
             case "myTile19-map":
             case "tile35":return tile35;
+            case "myTile5":
+            case "tile36":return tile36;
+            case "myTile6":
+            case "tile37":return tile37;
+            case "imageTile":
+            case "tile38":return tile38;
+            case "mlTile":
+            case "tile39":return tile39;
+            case "voiceTile":
+            case "tile40":return tile40;
+            case "tile41":return tile41;
+            case "tile42":return tile42;
         }
         return null;
     })
