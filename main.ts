@@ -15,7 +15,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, l
         game.showLongText("First, you are a newly born AI which you need to learn as you grow up.", DialogLayout.Bottom)
     }
 })
-
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
     if (controller.B.isPressed() && jumpTo == 2) {
         game.setDialogFrame(img`
@@ -77,7 +76,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, 
         game.showLongText("You can play 1 VS 1", DialogLayout.Bottom)
     }
 })
-
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, location) {
     if (controller.B.isPressed() && jumpTo == 1) {
         game.setDialogFrame(assets.image`Dialogue5`)
@@ -673,6 +671,7 @@ let robot1: Sprite = null
 let optionsB: string[] = []
 let optionsA: string[] = []
 let title: TextSprite = null
+let initTo = 0
 let flashimageimageprocessing: Sprite = null
 let flashbackSpriteimageprocessing: TextSprite = null
 let AIPlaygroundSprite: TextSprite = null
@@ -702,21 +701,20 @@ let textSprite: TextSprite = null
 let answer2: TextSprite = null
 let answer1: TextSprite = null
 let question: TextSprite = null
+let end = false
 let box: Sprite = null
 let player2: Sprite = null
 let namep2: TextSprite = null
 let player1: Sprite = null
 let name_p1: TextSprite = null
-let initTo = 0
-let end = false
 let hey: Sprite = null
 let jumpTo = 0
 let robot1_compete: Image = null
-let count: TextSprite = null
-let score_p1: StatusBarSprite = null
-let score_p2: StatusBarSprite = null
-let titleImg = null
 let titleUser = null
+let titleImg = null
+let score_p2: StatusBarSprite = null
+let score_p1: StatusBarSprite = null
+let count: TextSprite = null
 robot1_compete = img`
     ..............................................................
     ..............................................................
@@ -865,7 +863,7 @@ game.onUpdate(function () {
         sprites.destroy(flashbackSpriteimageprocessing)
         sprites.destroy(robotimageprocessing)
         initTo = 0
-        scene.setBackgroundColor(13)
+        scene.setBackgroundColor(4)
         robot1 = sprites.create(assets.image`Robot1`, SpriteKind.Player)
         robot2 = sprites.create(assets.image`Robot1`, SpriteKind.Player)
         pic = sprites.create(assets.image`picAccount`, SpriteKind.Player)
@@ -880,6 +878,8 @@ game.onUpdate(function () {
         // Start the quiz
         askQuestion(currentQuestion)
     } else if (initTo == 6) {
+        sprites.destroy(robot1)
+        sprites.destroy(robot2)
         initTo = 0
         scene.setBackgroundColor(8)
         title = textsprite.create("Competition Phase")
