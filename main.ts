@@ -83,7 +83,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, 
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (jumpTo == 0) {
-        jumpTo +=1
+        jumpTo = 4
         initTo = jumpTo
     } else if (jumpTo == 1 && end) {
         jumpTo += 1
@@ -105,6 +105,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         jumpTo += 1
         initTo = jumpTo
         end = false
+    }
+    if (jumpTo == 4 && initTo == 0){
+        checkAnswer("A")
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, location) {
@@ -270,8 +273,6 @@ function checkAnswer (answer: string) {
         if (optionBTextSprite) {
             optionBTextSprite.destroy(effects.spray, 100)
         }
-        game.showLongText("Press A to continue to the competition phase",DialogLayout.Bottom);
-        end = true
     }
 }
 function levelLocation () {
@@ -580,7 +581,6 @@ let hey: Sprite = null
 let jumpTo = 0
 let titleUser = null
 let titleImg = null
-
 scene.setBackgroundColor(13)
 let mySprite = sprites.create(assets.image`robot-land`, SpriteKind.Player)
 mySprite.setPosition(75, 40)
@@ -706,8 +706,6 @@ game.onUpdate(function () {
         correctAnswers = ["A", "B"]
         // Start the quiz
         askQuestion(currentQuestion)
-        
-        
     }
 })
 game.onUpdate(function () {
@@ -715,7 +713,6 @@ game.onUpdate(function () {
         if (robotimageprocessing.overlapsWith(flashimageimageprocessing)) {
             sprites.destroy(flashimageimageprocessing, effects.fountain, 500)
             robotimageprocessing.sayText("Yum! So these tiny squares filled with numbers show a picture about mountains with sun, cloud and tree!", 10000, true)
-            pause(10000);
             game.showLongText("Press A to Continnue to \"Quiz\" Phase", DialogLayout.Bottom)
             end = true
         }
