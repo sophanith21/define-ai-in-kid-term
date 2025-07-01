@@ -3,10 +3,8 @@
     "description": "",
     "dependencies": {
         "device": "*",
-
         "pxt-circuit-playground-character-icons": "github:adafruit/circuit-playground-character-icons#v0.0.8",
         "sprite-scaling": "*",
-
         "arcade-text": "github:microsoft/arcade-text#v1.3.0",
         "Turtle Logo": "github:mr-coxall/turtle-logo#V1.0.1"
     },
@@ -15,12 +13,10 @@
         "main.ts",
         "README.md",
         "assets.json",
-
-        "images.g.jres",
-        "images.g.ts",
-        "main.py",
         "tilemap.g.jres",
-        "tilemap.g.ts"
+        "tilemap.g.ts",
+        "images.g.jres",
+        "images.g.ts"
     ],
     "testFiles": [
         "test.ts"
