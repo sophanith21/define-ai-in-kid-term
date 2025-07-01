@@ -15,6 +15,11 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, l
         game.showLongText("First, you are a newly born AI which you need to learn as you grow up.", DialogLayout.Bottom)
     }
 })
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (jumpTo == 4) {
+        checkAnswer("B")
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
     if (controller.B.isPressed() && jumpTo == 2) {
         game.setDialogFrame(img`
@@ -78,13 +83,25 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, 
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (jumpTo == 0) {
-        jumpTo += 1
+        jumpTo +=1
         initTo = jumpTo
     } else if (jumpTo == 1 && end) {
         jumpTo += 1
         initTo = jumpTo
         end = false
     } else if (jumpTo == 2 && end) {
+        jumpTo += 1
+        initTo = jumpTo
+        end = false
+    } else if (jumpTo == 3 && end) {
+        jumpTo += 1
+        initTo = jumpTo
+        end = false
+    } else if (jumpTo == 4 && end) {
+        jumpTo += 1
+        initTo = jumpTo
+        end = false
+    } else if (jumpTo == 5 && end) {
         jumpTo += 1
         initTo = jumpTo
         end = false
@@ -231,6 +248,32 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10-map`, function (spri
         }
     }
 })
+function checkAnswer (answer: string) {
+    selectedAnswer = answer
+    if (selectedAnswer == correctAnswers[currentQuestion]) {
+        game.splash("✅ Correct!")
+    }
+    if (!(selectedAnswer == correctAnswers[currentQuestion])) {
+        game.splash("❌ Wrong!")
+    }
+    currentQuestion += 1
+    if (currentQuestion < questionTexts.length) {
+        askQuestion(currentQuestion)
+    } else {
+        // Destroy previous text sprites
+        if (questionTextSprite) {
+            questionTextSprite.destroy(effects.spray, 100)
+        }
+        if (optionATextSprite) {
+            optionATextSprite.destroy(effects.spray, 100)
+        }
+        if (optionBTextSprite) {
+            optionBTextSprite.destroy(effects.spray, 100)
+        }
+        game.showLongText("Press A to continue to the competition phase",DialogLayout.Bottom);
+        end = true
+    }
+}
 function levelLocation () {
     text_list = [
     "level 1",
@@ -488,6 +531,30 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile6-map`, function (sprit
         }
     }
 })
+function askQuestion (index: number) {
+    // Destroy previous text sprites
+    if (questionTextSprite) {
+        questionTextSprite.destroy(effects.spray, 100)
+    }
+    if (optionATextSprite) {
+        optionATextSprite.destroy(effects.spray, 100)
+    }
+    if (optionBTextSprite) {
+        optionBTextSprite.destroy(effects.spray, 100)
+    }
+    // Create new ones
+    questionTextSprite = textsprite.create(questionTexts[index], 0)
+    questionTextSprite.setPosition(75, 30)
+    optionATextSprite = textsprite.create("A: " + optionsA[index], 0)
+    optionATextSprite.setPosition(49, 51)
+    optionBTextSprite = textsprite.create("B: " + optionsB[index], 0)
+    optionBTextSprite.setPosition(46, 62)
+}
+let pic: Sprite = null
+let robot2: Sprite = null
+let robot1: Sprite = null
+let optionsB: string[] = []
+let optionsA: string[] = []
 let flashimageimageprocessing: Sprite = null
 let flashbackSpriteimageprocessing: TextSprite = null
 let AIPlaygroundSprite: TextSprite = null
@@ -498,12 +565,22 @@ let wrongInput = false
 let level2: Sprite = null
 let i = 0
 let text_list: string[] = []
+let optionBTextSprite: TextSprite = null
+let optionATextSprite: TextSprite = null
+let questionTextSprite: TextSprite = null
+let questionTexts: string[] = []
+let currentQuestion = 0
+let correctAnswers: string[] = []
+let selectedAnswer = ""
 let user: Sprite = null
 let box: Sprite = null
 let initTo = 0
 let end = false
 let hey: Sprite = null
 let jumpTo = 0
+let titleUser = null
+let titleImg = null
+
 scene.setBackgroundColor(13)
 let mySprite = sprites.create(assets.image`robot-land`, SpriteKind.Player)
 mySprite.setPosition(75, 40)
@@ -527,16 +604,6 @@ button1.setPosition(47, 105)
 let button2 = textsprite.create("Compete", 0, 1)
 button2.setPosition(107, 105)
 game.showLongText("Press A to \"Learn\", Press B to \"Compete\"", DialogLayout.Bottom)
-game.onUpdate(function () {
-    if (flashimageimageprocessing) {
-        if (robotimageprocessing.overlapsWith(flashimageimageprocessing)) {
-            sprites.destroy(flashimageimageprocessing, effects.fountain, 500)
-            robotimageprocessing.sayText("Yum! So these tiny squares filled with numbers show a picture about mountains with sun, cloud and tree!", 10000, true)
-            game.showLongText("Press A to Continnue to \"Quiz\" Phase", DialogLayout.Bottom)
-            end = true;
-        }
-    }
-})
 game.onUpdate(function () {
     if (initTo == 1) {
         initTo = 0
@@ -605,6 +672,7 @@ game.onUpdate(function () {
         AIPlaygroundSprite.setPosition(65, 11)
         robotimageprocessing = sprites.create(assets.image`robot_image-imagepro`, SpriteKind.Player)
         scene.cameraFollowSprite(robotimageprocessing)
+        scene.cameraFollowSprite(null)
         robotimageprocessing.setPosition(18, 59)
         controller.moveSprite(robotimageprocessing, 100, 100)
         robotimageprocessing.setBounceOnWall(true)
@@ -620,5 +688,36 @@ game.onUpdate(function () {
         game.showLongText("Have you ever wonder how you can look at a picture and understand what's in it?", DialogLayout.Bottom)
         game.showLongText("Like knowing there is a cat, a tree or a big bright sun?", DialogLayout.Bottom)
         game.showLongText("Try moving around as An AI and consume that image and see", DialogLayout.Bottom)
+    } else if (initTo == 4) {
+        sprites.destroy(flashbackSpriteimageprocessing)
+        sprites.destroy(robotimageprocessing)
+        initTo = 0
+        scene.setBackgroundColor(13)
+        robot1 = sprites.create(assets.image`Robot1`, SpriteKind.Player)
+        robot2 = sprites.create(assets.image`Robot1`, SpriteKind.Player)
+        pic = sprites.create(assets.image`picAccount`, SpriteKind.Player)
+        pic.setPosition(136, 13)
+        robot2.setPosition(142, 49)
+        robot1.setPosition(12, 61)
+        // Questions + Answers
+        questionTexts = ["Q1: Is AI smart?", "Q2: Can AI sleep?"]
+        optionsA = ["Yes", "Yes"]
+        optionsB = ["No", "No"]
+        correctAnswers = ["A", "B"]
+        // Start the quiz
+        askQuestion(currentQuestion)
+        
+        
+    }
+})
+game.onUpdate(function () {
+    if (flashimageimageprocessing) {
+        if (robotimageprocessing.overlapsWith(flashimageimageprocessing)) {
+            sprites.destroy(flashimageimageprocessing, effects.fountain, 500)
+            robotimageprocessing.sayText("Yum! So these tiny squares filled with numbers show a picture about mountains with sun, cloud and tree!", 10000, true)
+            pause(10000);
+            game.showLongText("Press A to Continnue to \"Quiz\" Phase", DialogLayout.Bottom)
+            end = true
+        }
     }
 })
