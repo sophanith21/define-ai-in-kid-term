@@ -2,10 +2,11 @@ namespace SpriteKind {
     export const Webname = SpriteKind.create()
     export const level1 = SpriteKind.create()
     export const level = SpriteKind.create()
+    export const chest = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     if (controller.B.isPressed() && jumpTo == 1) {
-        game.setDialogFrame(assets.image`Dialogue`)
+        game.setDialogFrame(assets.image`Dialogue2`)
         game.showLongText("Hello dear! Let me introduce you what you need to know before starting", DialogLayout.Bottom)
     }
 })
@@ -15,7 +16,32 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile1`, function (sprite, l
         game.showLongText("First, you are a newly born AI which you need to learn as you grow up.", DialogLayout.Bottom)
     }
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, location) {
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, location) {
+    if (controller.B.isPressed() && jumpTo == 1) {
+        game.setDialogFrame(assets.image`Dialogue8`)
+        game.showLongText("You can play 1 VS 1", DialogLayout.Bottom)
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, location) {
+    if (controller.B.isPressed() && jumpTo == 1) {
+        game.setDialogFrame(assets.image`Dialogue5`)
+        game.showLongText("After finish all the learning phase", DialogLayout.Bottom)
+        game.showLongText("You will become a powerful AI who can do a lot of tasks", DialogLayout.Bottom)
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`voiceTile`, function (sprite, location) {
+    if (sprite == mySprite_compete) {
+        showLabel("Voice Recognition")
+        onImageProcess = false
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, location) {
+    if (controller.B.isPressed() && jumpTo == 1) {
+        game.setDialogFrame(assets.image`Dialogue4`)
+        game.showLongText("The more you learn, the smarter you are", DialogLayout.Bottom)
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile-map`, function (sprite, location) {
     if (controller.B.isPressed() && jumpTo == 2) {
         game.setDialogFrame(img`
             .....cccccccccccccc.....
@@ -64,38 +90,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile`, function (sprite, lo
         }
     }
 })
-function spawnPoint () {
-    for (let value3 of tiles.getTilesByType(assets.tile`transparency16`)) {
-        let hey: Sprite = null
-        tiles.placeOnTile(hey, value3)
-        tiles.setTileAt(value3, assets.tile`myTile4`)
-    }
-}
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13`, function (sprite, location) {
-    if (controller.B.isPressed() && jumpTo == 1) {
-        game.setDialogFrame(assets.image`Dialogue8`)
-        game.showLongText("You can play 1 VS 1", DialogLayout.Bottom)
-    }
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, location) {
-    if (controller.B.isPressed() && jumpTo == 1) {
-        game.setDialogFrame(assets.image`Dialogue5`)
-        game.showLongText("After finish all the learning phase you will become a powerful AI who can do a lot of tasks", DialogLayout.Bottom)
-    }
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`voiceTile`, function (sprite, location) {
-    if (sprite == mySprite_compete) {
-        showLabel("Voice Recognition")
-        onImageProcess = false
-    }
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4`, function (sprite, location) {
-    if (controller.B.isPressed() && jumpTo == 1) {
-        game.setDialogFrame(assets.image`Dialogue4`)
-        game.showLongText("The more you learn, the smarter you are", DialogLayout.Bottom)
-        game.showLongText("The more you learn, the smarter you are", DialogLayout.Bottom)
-    }
-})
 function startGame () {
     timer.after(800, function () {
         name_p1 = textsprite.create("Player 1", 8, 11)
@@ -121,13 +115,16 @@ function startGame () {
 }
 function box2 (location: Image, floor: Image) {
     for (let value of tiles.getTilesByType(location)) {
-        box = sprites.create(assets.image`Chest`, SpriteKind.Player)
+        box = sprites.create(assets.image`Chest`, SpriteKind.chest)
         tiles.placeOnTile(box, value)
         tiles.setTileAt(value, floor)
     }
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile4-map`, function (sprite, location) {
+    scene.setBackgroundColor(7)
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile9`, function (sprite, location) {
-    if (controller.B.isPressed()) {
+    if (controller.B.isPressed() && jumpTo == 1) {
         game.setDialogFrame(assets.image`Dialogue6`)
         game.showLongText("After learning, guess what you can do next?", DialogLayout.Bottom)
     }
@@ -202,9 +199,6 @@ info.onCountdownEnd(function () {
         qmcDisplay()
     })
 })
-controller.anyButton.onEvent(ControllerButtonEvent.Repeated, function () {
-    scene.cameraShake(1.03, 500)
-})
 function spawnpoint () {
     for (let value2 of tiles.getTilesByType(assets.tile`myTile`)) {
         tiles.placeOnTile(user, value2)
@@ -212,7 +206,7 @@ function spawnpoint () {
     }
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10-map`, function (sprite, location) {
-    if (controller.B.isPressed()) {
+    if (controller.B.isPressed() && jumpTo == 2) {
         game.setDialogFrame(img`
             .....cccccccccccccc.....
             ...cbd111111111111dbc...
@@ -289,6 +283,9 @@ function qmcDisplay () {
         }
     })
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile3-map`, function (sprite, location) {
+    scene.setBackgroundColor(6)
+})
 function checkAnswer (answer: string) {
     selectedAnswer = answer
     if (selectedAnswer == correctAnswers[currentQuestion]) {
@@ -314,6 +311,55 @@ function checkAnswer (answer: string) {
         end = true
     }
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile8`, function (sprite, location) {
+    if (controller.B.isPressed() && jumpTo == 2) {
+        game.setDialogFrame(img`
+            .....cccccccccccccc.....
+            ...cbd111111111111dbc...
+            ..cd1111111111111111dc..
+            .cd111111111111111111dc.
+            .b11111111111111111111b.
+            cd11111111111111111111dc
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            cd11111111111111111111dc
+            cb11111111111111111111bc
+            ccd111111111111111111dc.
+            .ccd1111111111111111dcc.
+            ..c111111111111111dbcc..
+            .b11dcccccccccccccccc...
+            cddcccccccccccccccc.....
+            ccccc...................
+            `)
+        game.setDialogCursor(img`
+            . 6 . . . . . . . . . . . . 6 . 
+            6 9 6 . . . . . . . . . . 6 9 6 
+            . 6 . . . . . . . . . . . . 6 . 
+            . 6 . . . . . . . . . . . . 6 . 
+            . 6 9 9 9 9 9 9 9 9 9 9 9 9 6 . 
+            . 6 9 9 9 9 9 9 9 9 9 9 9 9 6 . 
+            9 6 9 1 1 1 9 9 9 9 1 1 1 9 6 9 
+            9 6 9 1 1 f 9 9 9 9 1 f 1 9 6 9 
+            9 6 9 1 f f 9 9 9 9 f f 1 9 6 9 
+            9 6 9 9 9 9 9 9 9 9 9 9 9 9 6 9 
+            . 6 9 9 6 1 1 1 1 1 1 6 9 9 6 . 
+            . . 9 9 9 6 6 6 6 6 6 9 9 9 . . 
+            . . 9 9 9 9 9 9 9 9 9 9 9 9 . . 
+            `)
+        game.showLongText("level 6", DialogLayout.Bottom)
+        if (game.ask("Do you want to enter?")) {
+        	
+        }
+    }
+})
 function levelLocation () {
     text_list = [
     "level 1",
@@ -328,7 +374,7 @@ function levelLocation () {
     "level 10"
     ]
     i = 0
-    oneLocation(assets.tile`transparency16`, assets.tile`transparency16`)
+    oneLocation(assets.tile`myTile0`, assets.tile`myTile0`)
     oneLocation(assets.tile`myTile0-map`, assets.tile`myTile0-map`)
     oneLocation(assets.tile`myTile7-map`, assets.tile`myTile7-map`)
     oneLocation(assets.tile`myTile-map`, assets.tile`myTile-map`)
@@ -336,7 +382,7 @@ function levelLocation () {
     oneLocation(assets.tile`myTile9-map`, assets.tile`myTile9-map`)
     oneLocation(assets.tile`myTile10-map`, assets.tile`myTile10-map`)
     oneLocation(assets.tile`myTile11-map`, assets.tile`myTile11-map`)
-    oneLocation(assets.tile`transparency16`, assets.tile`transparency16`)
+    oneLocation(assets.tile`myTile13`, assets.tile`myTile12-map`)
     oneLocation(assets.tile`myTile13-map`, assets.tile`myTile13-map`)
 }
 function oneLocation (locaI: Image, floor: Image) {
@@ -421,7 +467,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile8-map`, function (sprit
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile2`, function (sprite, location) {
-    if (controller.B.isPressed()) {
+    if (controller.B.isPressed() && jumpTo == 1) {
         game.setDialogFrame(assets.image`Dialogue3`)
         game.showLongText("You will explore and consume the knowledge.", DialogLayout.Bottom)
     }
@@ -438,6 +484,55 @@ function checkAnswer_competet () {
         score_p2.value -= 20
     }
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile12-map`, function (sprite, location) {
+    if (controller.B.isPressed() && jumpTo == 2) {
+        game.setDialogFrame(img`
+            .....cccccccccccccc.....
+            ...cbd111111111111dbc...
+            ..cd1111111111111111dc..
+            .cd111111111111111111dc.
+            .b11111111111111111111b.
+            cd11111111111111111111dc
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            cd11111111111111111111dc
+            cb11111111111111111111bc
+            ccd111111111111111111dc.
+            .ccd1111111111111111dcc.
+            ..c111111111111111dbcc..
+            .b11dcccccccccccccccc...
+            cddcccccccccccccccc.....
+            ccccc...................
+            `)
+        game.setDialogCursor(img`
+            . 6 . . . . . . . . . . . . 6 . 
+            6 9 6 . . . . . . . . . . 6 9 6 
+            . 6 . . . . . . . . . . . . 6 . 
+            . 6 . . . . . . . . . . . . 6 . 
+            . 6 9 9 9 9 9 9 9 9 9 9 9 9 6 . 
+            . 6 9 9 9 9 9 9 9 9 9 9 9 9 6 . 
+            9 6 9 1 1 1 9 9 9 9 1 1 1 9 6 9 
+            9 6 9 1 1 f 9 9 9 9 1 f 1 9 6 9 
+            9 6 9 1 f f 9 9 9 9 f f 1 9 6 9 
+            9 6 9 9 9 9 9 9 9 9 9 9 9 9 6 9 
+            . 6 9 9 6 1 1 1 1 1 1 6 9 9 6 . 
+            . . 9 9 9 6 6 6 6 6 6 9 9 9 . . 
+            . . 9 9 9 9 9 9 9 9 9 9 9 9 . . 
+            `)
+        game.showLongText("level 9", DialogLayout.Bottom)
+        if (game.ask("Do you want to enter?")) {
+        	
+        }
+    }
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     game.showLongText("Check the picture carefully, Question Incoming", DialogLayout.Bottom)
     wrongInput = true
@@ -482,6 +577,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
     pause(5500)
     controller.moveSprite(robotimageprocessing, 100, 100)
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
+    if (controller.B.isPressed() && jumpTo == 1) {
+        game.setDialogFrame(assets.image`Dialogue7`)
+        game.showLongText("You can compete with other friends too", DialogLayout.Bottom)
+    }
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`imageTile`, function (sprite, location) {
     if (sprite == mySprite_compete) {
         showLabel("Image Processing")
@@ -509,7 +610,115 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`mlTile`, function (sprite, lo
         onImageProcess = false
     }
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sprite, location) {
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile13-map`, function (sprite, location) {
+    if (controller.B.isPressed() && jumpTo == 2) {
+        game.setDialogFrame(img`
+            .....cccccccccccccc.....
+            ...cbd111111111111dbc...
+            ..cd1111111111111111dc..
+            .cd111111111111111111dc.
+            .b11111111111111111111b.
+            cd11111111111111111111dc
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            cd11111111111111111111dc
+            cb11111111111111111111bc
+            ccd111111111111111111dc.
+            .ccd1111111111111111dcc.
+            ..c111111111111111dbcc..
+            .b11dcccccccccccccccc...
+            cddcccccccccccccccc.....
+            ccccc...................
+            `)
+        game.setDialogCursor(img`
+            . 6 . . . . . . . . . . . . 6 . 
+            6 9 6 . . . . . . . . . . 6 9 6 
+            . 6 . . . . . . . . . . . . 6 . 
+            . 6 . . . . . . . . . . . . 6 . 
+            . 6 9 9 9 9 9 9 9 9 9 9 9 9 6 . 
+            . 6 9 9 9 9 9 9 9 9 9 9 9 9 6 . 
+            9 6 9 1 1 1 9 9 9 9 1 1 1 9 6 9 
+            9 6 9 1 1 f 9 9 9 9 1 f 1 9 6 9 
+            9 6 9 1 f f 9 9 9 9 f f 1 9 6 9 
+            9 6 9 9 9 9 9 9 9 9 9 9 9 9 6 9 
+            . 6 9 9 6 1 1 1 1 1 1 6 9 9 6 . 
+            . . 9 9 9 6 6 6 6 6 6 9 9 9 . . 
+            . . 9 9 9 9 9 9 9 9 9 9 9 9 . . 
+            `)
+        game.showLongText("level 10", DialogLayout.Bottom)
+        if (game.ask("Do you want to enter?")) {
+        	
+        }
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7-map`, function (sprite, location) {
+    if (controller.B.isPressed() && jumpTo == 2) {
+        game.setDialogFrame(img`
+            .....cccccccccccccc.....
+            ...cbd111111111111dbc...
+            ..cd1111111111111111dc..
+            .cd111111111111111111dc.
+            .b11111111111111111111b.
+            cd11111111111111111111dc
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            cd11111111111111111111dc
+            cb11111111111111111111bc
+            ccd111111111111111111dc.
+            .ccd1111111111111111dcc.
+            ..c111111111111111dbcc..
+            .b11dcccccccccccccccc...
+            cddcccccccccccccccc.....
+            ccccc...................
+            `)
+        game.setDialogCursor(img`
+            . 6 . . . . . . . . . . . . 6 . 
+            6 9 6 . . . . . . . . . . 6 9 6 
+            . 6 . . . . . . . . . . . . 6 . 
+            . 6 . . . . . . . . . . . . 6 . 
+            . 6 9 9 9 9 9 9 9 9 9 9 9 9 6 . 
+            . 6 9 9 9 9 9 9 9 9 9 9 9 9 6 . 
+            9 6 9 1 1 1 9 9 9 9 1 1 1 9 6 9 
+            9 6 9 1 1 f 9 9 9 9 1 f 1 9 6 9 
+            9 6 9 1 f f 9 9 9 9 f f 1 9 6 9 
+            9 6 9 9 9 9 9 9 9 9 9 9 9 9 6 9 
+            . 6 9 9 6 1 1 1 1 1 1 6 9 9 6 . 
+            . . 9 9 9 6 6 6 6 6 6 9 9 9 . . 
+            . . 9 9 9 9 9 9 9 9 9 9 9 9 . . 
+            `)
+        game.showLongText("level 3", DialogLayout.Bottom)
+        if (game.ask("Do you want to enter?")) {
+        	
+        }
+    }
+})
+mp.onButtonEvent(mp.MultiplayerButton.B, ControllerButtonEvent.Pressed, function (player3) {
+    if (player3 == mp.playerSelector(mp.PlayerNumber.One)) {
+        player1Answer = "B"
+    } else {
+        player2Answer = "B"
+    }
+    if (jumpTo == 4) {
+        checkAnswer("B")
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile19-map`, function (sprite, location) {
     if (controller.B.isPressed() && jumpTo == 2) {
         game.setDialogFrame(img`
             .....cccccccccccccc.....
@@ -554,18 +763,8 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sp
             `)
         game.showLongText("Home", DialogLayout.Bottom)
         if (game.ask("Do you want to leave?")) {
-        	
+            game.reset()
         }
-    }
-})
-mp.onButtonEvent(mp.MultiplayerButton.B, ControllerButtonEvent.Pressed, function (player3) {
-    if (player3 == mp.playerSelector(mp.PlayerNumber.One)) {
-        player1Answer = "B"
-    } else {
-        player2Answer = "B"
-    }
-    if (jumpTo == 4) {
-        checkAnswer("B")
     }
 })
 mp.onButtonEvent(mp.MultiplayerButton.A, ControllerButtonEvent.Pressed, function (player3) {
@@ -632,7 +831,7 @@ function countDown () {
     })
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile14`, function (sprite, location) {
-    if (controller.B.isPressed()) {
+    if (controller.B.isPressed() && jumpTo == 1) {
         game.setDialogFrame(assets.image`Dialogue9`)
         game.showLongText("Suprisingly you can also play 2 VS 2", DialogLayout.Bottom)
     }
@@ -683,6 +882,55 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile6-map`, function (sprit
         game.showLongText("level 1", DialogLayout.Bottom)
         if (game.ask("Do you want to enter?")) {
             end = true
+        }
+    }
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile11`, function (sprite, location) {
+    if (controller.B.isPressed() && jumpTo == 2) {
+        game.setDialogFrame(img`
+            .....cccccccccccccc.....
+            ...cbd111111111111dbc...
+            ..cd1111111111111111dc..
+            .cd111111111111111111dc.
+            .b11111111111111111111b.
+            cd11111111111111111111dc
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            c1111111111111111111111c
+            cd11111111111111111111dc
+            cb11111111111111111111bc
+            ccd111111111111111111dc.
+            .ccd1111111111111111dcc.
+            ..c111111111111111dbcc..
+            .b11dcccccccccccccccc...
+            cddcccccccccccccccc.....
+            ccccc...................
+            `)
+        game.setDialogCursor(img`
+            . 6 . . . . . . . . . . . . 6 . 
+            6 9 6 . . . . . . . . . . 6 9 6 
+            . 6 . . . . . . . . . . . . 6 . 
+            . 6 . . . . . . . . . . . . 6 . 
+            . 6 9 9 9 9 9 9 9 9 9 9 9 9 6 . 
+            . 6 9 9 9 9 9 9 9 9 9 9 9 9 6 . 
+            9 6 9 1 1 1 9 9 9 9 1 1 1 9 6 9 
+            9 6 9 1 1 f 9 9 9 9 1 f 1 9 6 9 
+            9 6 9 1 f f 9 9 9 9 f f 1 9 6 9 
+            9 6 9 9 9 9 9 9 9 9 9 9 9 9 6 9 
+            . 6 9 9 6 1 1 1 1 1 1 6 9 9 6 . 
+            . . 9 9 9 6 6 6 6 6 6 9 9 9 . . 
+            . . 9 9 9 9 9 9 9 9 9 9 9 9 . . 
+            `)
+        game.showLongText("level 2", DialogLayout.Bottom)
+        if (game.ask("Do you want to enter?")) {
+        	
         }
     }
 })
@@ -831,6 +1079,7 @@ game.onUpdate(function () {
         sprites.destroy(pf)
         scene.setBackgroundColor(7)
         user = sprites.create(assets.image`myImage0`, SpriteKind.Player)
+        user.sayText("Hey! Little ones, you can press B to interact with the objects around you.", 7000, true)
         tiles.setCurrentTilemap(tilemap`level`)
         controller.moveSprite(user, 100, 100)
         scene.cameraFollowSprite(user)
@@ -845,7 +1094,12 @@ game.onUpdate(function () {
         box2(assets.tile`myTile13`, assets.tile`myTile13`)
         box2(assets.tile`myTile14`, assets.tile`myTile14`)
         box2(assets.tile`myTile3`, assets.tile`myTile3`)
+        music.setVolume(20)
+        music.play(music.createSong(assets.song`bg-music-image-processing`), music.PlaybackMode.LoopingInBackground)
     } else if (initTo == 2) {
+        sprites.destroyAllSpritesOfKind(SpriteKind.Player)
+        sprites.destroyAllSpritesOfKind(SpriteKind.chest)
+        music.stopAllSounds()
         initTo = 0
         user = sprites.create(img`
             . . . . . . f f f f . . . . . . 
@@ -867,11 +1121,14 @@ game.onUpdate(function () {
             `, SpriteKind.Player)
         controller.moveSprite(user, 100, 100)
         scene.cameraFollowSprite(user)
-        tiles.setCurrentTilemap(tilemap`level`)
+        scene.setBackgroundColor(7)
+        tiles.setCurrentTilemap(tilemap`level-map`)
         levelLocation()
-        spawnPoint()
-        music.play(music.createSong(assets.song`mySong`), music.PlaybackMode.LoopingInBackground)
+        spawnpoint()
+        music.setVolume(20)
+        music.play(music.createSong(assets.song`good_graces_sbc`), music.PlaybackMode.LoopingInBackground)
     } else if (initTo == 3) {
+        music.stopAllSounds()
         tiles.setCurrentTilemap(tilemap`level1`)
         sprites.destroy(user)
         sprites.destroyAllSpritesOfKind(SpriteKind.level)
